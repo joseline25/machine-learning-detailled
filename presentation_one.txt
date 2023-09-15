@@ -1,0 +1,36 @@
+Naive Bayes (bayes.py)
+
+ load the dataset
+data = pd.read_csv('adult.csv')
+
+
+1 - How does naive bayes work? (assumptions )
+
+2 - What type of model can we build with naive bayes? (predict/classification)
+
+3 - The process to predict the class of outcome of an adult depending on 
+
+['age', 'workclass', 'fnlwgt', 'education', 'educational_num',
+    'marital_status', 'occupation', 'relationship', 'race', 'gender',
+    'capital_gain', 'capital_loss', 'hours_per_week', 'native_country']
+
+
+We have two classes of incomes: '<=50K' or '>50K'
+
+'<=50K' : low income == 0
+'>50K' : high income == 1
+
+
+3.1 - Categorical features and 
+
+workclass          9
+education         16
+marital_status     7
+occupation        15
+relationship       6
+race               5
+gender             2
+native_country    42
+
+
+
