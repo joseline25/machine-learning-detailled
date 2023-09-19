@@ -174,16 +174,18 @@ for variable in categorical:
     # the fraction between the group mean and the global mean
     data_group['risk/possibility of having a request'] = data_group['mean'] / global_mean
     print(data_group)
-    
-    
+
+
 """
 Let's calculate the MUtual Importance
 
 """
 
+
 def calculate_mi(series):
     # Uses the mutual_info_score function from Scikit-learn
     return mutual_info_score(series, df.Resident_Trash_Pickup_Request)
+
 
 print("The Mutual Importance of each categorical variable to a request in a day is \n")
 # Applies the function from to each categorical column of the dataset
@@ -205,6 +207,7 @@ Weather      2.938864e-07
 def calculate_mi_agg(series):
     # Uses the mutual_info_score function from Scikit-learn
     return mutual_info_score(series, aggregated_data.Resident_Trash_Pickup_Request)
+
 
 print("The Mutual Importance of each categorical variable to toal request per dady is \n")
 # Applies the function from to each categorical column of the dataset
@@ -273,7 +276,41 @@ Public_Holiday                  -0.001566
 Resident_Trash_Pickup_Request    1.000000
 dtype: float64
 
+
+
+Normalization: scalling 
 """
+
+# Split the data first
+
+data_train_full, data_test = train_test_split(aggregated_data, test_size=0.2, random_state=11)
+
+data_train, data_val = train_test_split(data_train_full, test_size=0.33, random_state=11)
+
+y_train = data_train.Resident_Trash_Pickup_Request.values
+y_val = data_val.Resident_Trash_Pickup_Request.values
+
+""" 
+Deletes the Resident_Trash_Pickup_Request columns from both dataframes to
+make sure we don't accidentally use the Resident_Trash_Pickup_Request variable
+as a feature during training
+
+"""
+del data_train['Resident_Trash_Pickup_Request']
+del data_val['Resident_Trash_Pickup_Request']
+
+# Now Hot encoding categorical variables
+
+# first method
+
+train_dict = data_train[categorical + numerical].to_dict(orient='records')
+
+from sklearn.feature_extraction import DictVectorizer
+dv = DictVectorizer(sparse=False)
+dv.fit(train_dict)
+
+X_train = dv.transform(train_dict)
+
 
 
 # # 11-  check for cardinality in categorical variables
