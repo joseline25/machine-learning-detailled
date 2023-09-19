@@ -115,7 +115,7 @@ Initialize and train the KNN model using the training set.
 """
 
 # Initialize the KNN model
-knn_model = KNeighborsClassifier(n_neighbors=7) # au départ =5
+knn_model = KNeighborsClassifier(n_neighbors=377) # au départ =5
 
 # Train the model
 knn_model.fit(X_train, y_train)
@@ -148,7 +148,7 @@ done using techniques like GridSearchCV or RandomizedSearchCV.
 from sklearn.model_selection import GridSearchCV
 
 # Define the parameter grid
-param_grid = {'n_neighbors': [3, 5, 7]}
+param_grid = {'n_neighbors': [3, 5, 7, 9, 11, 15,17,19, 23,33 ]} # best result is 15
 
 # Perform grid search
 grid_search = GridSearchCV(knn_model, param_grid, cv=5)
@@ -162,3 +162,116 @@ from sklearn.metrics import accuracy_score
 # Calculate the accuracy
 accuracy = accuracy_score(y_test, y_pred)
 print("Accuracy:", accuracy)
+
+"""
+With 'n_neighbors' =  7
+             precision    recall  f1-score   support
+
+           1       0.35      0.47      0.40        60
+           2       0.24      0.21      0.22        39
+           3       0.40      0.42      0.41        55
+           4       0.23      0.15      0.18        46
+
+    accuracy                           0.33       200
+   macro avg       0.31      0.31      0.30       200
+weighted avg       0.32      0.33      0.32       200
+
+{'n_neighbors': 23}
+Accuracy: 0.33
+
+
+
+
+With 'n_neighbors' =  15
+              precision    recall  f1-score   support
+
+           1       0.40      0.43      0.42        60
+           2       0.23      0.21      0.22        39
+           3       0.42      0.51      0.46        55
+           4       0.30      0.22      0.25        46
+
+    accuracy                           0.36       200
+   macro avg       0.34      0.34      0.34       200
+weighted avg       0.35      0.36      0.35       200
+
+{'n_neighbors': 15}
+Accuracy: 0.36
+
+
+
+With n_neighbors = 23
+
+             precision    recall  f1-score   support
+
+           1       0.37      0.42      0.39        60
+           2       0.15      0.10      0.12        39
+           3       0.39      0.53      0.45        55
+           4       0.29      0.20      0.23        46
+
+    accuracy                           0.34       200
+   macro avg       0.30      0.31      0.30       200
+weighted avg       0.31      0.34      0.32       200
+
+{'n_neighbors': 23}
+Accuracy: 0.335
+
+
+With 'n_neighbors' = 100
+              precision    recall  f1-score   support
+
+           1       0.40      0.57      0.47        60
+           2       0.19      0.08      0.11        39
+           3       0.39      0.47      0.43        55
+           4       0.27      0.20      0.23        46
+
+    accuracy                           0.36       200
+   macro avg       0.31      0.33      0.31       200
+weighted avg       0.33      0.36      0.33       200
+
+{'n_neighbors': 23}
+Accuracy: 0.36
+
+
+With 'n_neighbors': 500
+              precision    recall  f1-score   support
+
+           1       0.42      0.57      0.48        60
+           2       0.67      0.05      0.10        39
+           3       0.42      0.71      0.53        55
+           4       0.26      0.13      0.17        46
+
+    accuracy                           0.41       200
+   macro avg       0.44      0.36      0.32       200
+weighted avg       0.43      0.41      0.35       200
+
+
+Accuracy: 0.405
+
+
+
+When n_neighbors = 1000, we have the error
+
+Expected n_neighbors <= n_samples,  but n_samples = 800, n_neighbors = 1000
+
+donc n_neighbors ne doit pas excéder la taille du dataset (ici le train_test)
+
+de plus lorsque n_neighbors = 800, on a une precision = 0
+
+
+
+With 'n_neighbors' = 377
+
+         precision    recall  f1-score   support
+
+           1       0.44      0.55      0.49        60
+           2       0.57      0.10      0.17        39
+           3       0.42      0.67      0.51        55
+           4       0.31      0.20      0.24        46
+
+    accuracy                           0.41       200
+   macro avg       0.43      0.38      0.35       200
+weighted avg       0.43      0.41      0.38       200
+
+
+Accuracy: 0.415
+"""
