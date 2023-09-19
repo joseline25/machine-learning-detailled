@@ -286,7 +286,25 @@ test_report = classification_report(y_test, y_test_pred)
 print("Test Set Report:")
 print(test_report)
 
+# Calculate the accuracy
+from sklearn.metrics import accuracy_score
+accuracy = accuracy_score(y_test, y_test_pred)
+print("Accuracy:", accuracy)
 
+"""
+The accuracy represents the performance metric that measures the proportion
+of correctly classified instances (or samples) by the model out of the total
+number of instances in the dataset. In the context of classification models
+like Support Vector Machines (SVM) or K-Nearest Neighbors (KNN), accuracy
+provides an overall evaluation of how well the model predicts the correct
+class labels for the given data.
+
+More specifically, accuracy is calculated as the ratio of the number of correct
+predictions to the total number of predictions made by the model. It is 
+expressed as a value between 0 and 1, where 1 represents 100% accuracy 
+(all predictions are correct), and 0 represents 0% accuracy (no predictions 
+are correct).
+"""
 
 
 
