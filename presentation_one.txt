@@ -33,4 +33,276 @@ gender             2
 native_country    42
 
 
+Decision tree
+
+-  tree-based model for classification
+- a sequence of if-then-else rules put together
+
+Quand on mélange plusieurs arbres, c'est dans le but d'avoir de meilleures performances.
+example: random forest and gradient boosting
+
+Principe :
+A decision tree is a data structure that encodes a series of if-then-else rules. Each node 
+in a tree contains a condition. If the condition is satisfied, we go to the right side of
+the tree; otherwise, we go to the left. In the end we arrive at the final decision.
+
+In Scikit-learn for training a decision tree, we need to use DecisionTreeClassifier
+from the tree package.
+
+Note :
+
+For  binary classification problem, AUC is one of the best evaluation metrics. 
+AUC shows how well a model separates positive examples from negative examples.
+
+It has a nice interpretation: it describes the probability that a randomly chosen
+positive example (“wine of good quality”) has a higher score than a randomly chosen 
+negative example (“wine of bad quality”) 
+
+
+Tunning :
+- max_depth
+- min_leaf_size
+ce sont des entiers!
+
+
+Random forest
+
+Multiple tree: random why? because they are not trained on the same subset of features.
+it is a type of ensemble learnings
+
+One model individually may be wrong,
+but if we combine the output of multiple models into one, the chance of an incorrect
+answer is smaller. This concept is called ensemble learning, and a combination of models
+is called an ensemble.
+
+
+IMPORTANT : 
+
+For this to work, the models need to be different. If we train the same decision tree
+model 10 times, they will all predict the same output, so it's not useful at all.
+
+The easiest way to have different models is to train each tree on a different subset of
+features. For example, suppose we have three features: assets, debts, and price. We
+can train three models:
+-  The first will use assets and debts.
+-  The second will use debts and price.
+-  The last one will use assets and price.
+
+With this approach, we'll have different trees, each making its own decisions
+
+Donc on a pour un même dataset pour une classification, differents arbres qui 
+s'entraînnent sur des ensembles de features differents (avec des features communes
+souvent)
+
+But when we put their predictions together, their mistakes average out, and
+combined, they have more predictive power.
+This way of putting together multiple decision trees into an ensemble is called a
+random forest. To train a random forest, we can do this
+
+
+-  Train N independent decision tree models.
+-  For each model, select a random subset of features, and use only them for
+training.
+-  When predicting, combine the output of N models into one.
+
+
+NOTE 
+
+This is a very simplified version of the algorithm. It's enough to illustrate
+the main idea, but in reality, it's more complex.
+Scikit-learn contains an implementation of a random forest, 
+so we can use it for solving our problem. Let's do it.
+
+from sklearn.ensemble import RandomForestClassifier
+
+Tunning
+
+- number of trees in the ensemble : n_estimators (par defaut = 100)
+
+   The number of trees in the ensemble is an important parameter, and it influences
+the performance of the model. Usually, a model with more trees is better than a model
+with fewer trees. On the other hand, adding too many trees is not always helpful.
+
+
+To see how many trees we need, we can iterate over different values for n_estimators
+and see its effect on AUC.
+
+A random forest ensemble consists of multiple decision trees, so the most important
+parameters we need to tune for random forest are the same:
+- max_depth
+- min_leaf_size
+We can change other parameters, but we won't cover them
+
+Gradient boosting
+
+- ensemble learning based on trees
+instead of voting, sequential.
+
+In a random forest, each tree is independent: it's trained on a different set of features.
+After individual trees are trained, we combine all their decisions together to get the
+final decision.
+
+It's not the only way to combine multiple models together in one ensemble, however.
+Alternatively, we can train models sequentially — each next model tries to fix
+errors from the previous one:
+- Train the first model.
+- Look at the errors it makes.
+- Train another model that fixes these errors.
+- Look at the errors again; repeat sequentially.
+
+
+This way of combining models is called boosting. Gradient boosting is a particular 
+variation of this approach that works especially well with trees
+
+In gradient boosting, we train the models sequentially, and each next
+tree fixes the errors of the previous one.
+
+implementations of the gradient boosting model:
+GradientBoostingClassifier from Scikit-learn, XGBoost, LightGBM and CatBoost. 
+
+1 - XGBoost : Extreme Gradient Boosting (most popular implementation)
+
+XGBoost doesn't come with scikit-learn, so to use it, we need to install it. 
+The easiest way is to install it with pip:
+
+pip install xgboost
+
+Then import it with 
+
+import xgboost as xgb
+
+Before we can train an XGBoost model, we need to wrap our data into DMatrix — a
+special data structure for finding splits efficiently
+
+
+ When creating an instance of DMatrix, we pass three parameters:
+- X_train: the feature matrix
+- y_train: the target variable
+- feature_names: the names of features in X_train
+
+The next step is specifying the parameters for training.This only a small subset
+of the default parameters of XGBoost
+
+xgb_params = {
+    'eta': 0.3,
+    'max_depth': 6,
+    'min_child_weight': 1,
+    'objective': 'binary:logistic',
+    'nthread': 8,
+    'seed': 1,
+    'silent': 1
+}
+
+For us, the most important parameter now is objective: it specifies the learning task.
+We're solving a binary classification problem (is the wine of good quality or not)
+— that's why we need to choose binary:logistic.
+
+"
+    We provide three arguments to train:
+- xgb_params: the parameters for training
+- dtrain: the dataset for training (an instance of DMatrix)
+- num_boost_round=10: the number of trees to train
+
+
+To evaluate the model, we need to make a prediction on
+the validation dataset. For that, use the predict method with the validation data
+wrapped in DMatrix.
+
+
+
+Support Vector Methodes
+
+
+Modèle de classification binaire et multiclasse (SVC()).
+Peut aussi être utilisé pour la regression(SVR())
+Support Vector Machine est l'une des méthodes les plus simples et élegantes pour
+la classification
+
+SVM effectue la classification en dessinant une ligne (hyperplan)entre les points
+pour séparer les 2 ou plusieurs catégories. 
+
+SVM se concentre sur la recherche du meilleur hyplan de separation car il peut 
+y en avoir plusieurs. 
+
+On a une distance entre les points des categories et l'hyperplan appelée: margin
+
+On ne cherche pas forcément que le margin soit le plus petit possible 
+mais plutôt comment avoir l'hyperplan qui fait la meilleure classification.
+On cherche à maximiser le margin qui est la distance entre les points
+les plus proches de l'hyperplan et l'hyperplan. 
+
+Ces points sont appelés: supporting vectors (d'où le nom du model)
+
+Si on a 2 features, l'hyperplan est une ligne 
+si on a 3 features, l'hyperplan est un plan
+si on a plus de 3 features, on a tout simplment un hyperplan! qui est
+un peu difficile à visualiser.
+
+2 techniques: Gamma et regularisation
+
+SVM est considéré comme un supervised learning algorithm car les categories sont
+connues d'avance.
+
+En background, SVM résoud le problème de d'Optimisation Convexe qui maximise le 
+margin.
+
+We have a dedicated module for it in sklearn
+
+from sklear import svm
+
+SVM is easy to
+    -understand
+    -implement
+    -use
+    -interpret
+    
+It is effective when the dataset is small!!
+
+Dans les cas où on ne peut pas séparer les données par un hyperplan selon
+leur disposition, on peut implementer les techniques suivantes:
+
+- créer des features supplémentaires à partir de celles existant par des
+combinaisons (a)
+
+- dans cette dimension supérieure (puisqu'on a de nouvelles features),
+trouver l'hyperplan (b) et ensuite projeter sur l'espace précedent (c)
+
+- la technique du Kernel Trick nous permet d'exécuter toutes ces étapes 
+de façon efficace.
+
+Uses Cases:
+- face recognition
+- spam filtration
+- text recognition
+
+Tunning 
+- C (regularisation, entier positif. la force de la regularisation est 
+    inversement proportionnelle à C)
+- Gamma (entier, coef du kernel selon l'algorithme choisi)
+- kernel (quel algorithme: linear, poly, rbf, sigmoid, precomputed or callable)
+
+
+
+K-Nearest Neighbors
+
+The nearest neighbors method (k-Nearest Neighbors, or k-NN)
+is another very popular classification method that is also sometimes
+used in regression problems. This, like decision trees, is one of the 
+most comprehensible approaches to classification. The underlying 
+intuition is that you look like your neighbors. More formally, 
+the method follows the compactness hypothesis: if the distance 
+between the examples is measured well enough, then similar 
+examples are much more likely to belong to the same class.
+
+
+You can tune the hyperparameters of the KNN model, such as the number 
+of neighbors (n_neighbors), to achieve better performance. This can be 
+done using techniques like GridSearchCV or RandomizedSearchCV.
+For a dataset with 1000 samples, when n_neighbors = 1000, we have the error.
+
+Expected n_neighbors <= n_samples,  but n_samples = 800, n_neighbors = 1000
+
+donc n_neighbors ne doit pas excéder la taille du dataset (ici le train_test)
+
+de plus lorsque n_neighbors = 800, on a une precision = 0
 
