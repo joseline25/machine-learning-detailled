@@ -12,3 +12,4 @@ tokenizer.fit_on_texts(sentences)
 word_index = tokenizer.word_index
 
 print(word_index)
+

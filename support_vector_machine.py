@@ -334,4 +334,4 @@ model = SVC(kernel='poly')
 model.fit(X_train, y_train)
 # get the accuracy of the model
 print(model.score(X_test, y_test))  # 97,2% with kernel = 'linear', 
-# 87,2% with kernel = 'sigmoid', 98% with kernel = 'poly'
+# 87,2% with kernel = 'sigmoid', 98% with kernel=
