@@ -18,12 +18,12 @@ warnings.filterwarnings('ignore')
 
 """
     One model individually may be wrong,
-but if we combine the output of multiple models into one, the chance of an incorrect
-answer is smaller. This concept is called ensemble learning, and a combination of models
-is called an ensemble.
+but if we combine the output of multiple models into one, the chance of an
+incorrect answer is smaller. This concept is called ensemble learning,
+and a combination of models is called an ensemble.
 
-(Un model peut se tromper mais si plusieurs/la majorité s'acccordent sur un résultat alors
-il a plus de chance d'être juste.)
+(Un model peut se tromper mais si plusieurs/la majorité s'acccordent sur
+un résultat alors il a plus de chance d'être juste.)
 
 
 IMPORTANT : 
@@ -41,8 +41,8 @@ can train three models:
 With this approach, we'll have different trees, each making its own decisions
 
 Donc on a pour un même dataset pour une classification, differents arbres qui 
-s'entraînnent sur des ensembles de features differents (avec des features communes
-souvent)
+s'entraînnent sur des ensembles de features differents (avec des features 
+communes souvent)
 
 
 But when we put their predictions together, their mistakes average out, and
@@ -547,4 +547,34 @@ of our model. For example, we can add the ratio of residual sugar to the
  We can do this with the dataset of ecoocaasitech: a pickup request or not?
  Also, we can predict the amount of requests per day by aggreating date.
 
+"""
+
+# Others ensemble methods
+
+"""
+ A group of predictors is called
+an ensemble; thus, this technique is called ensemble learning,
+and an ensemble learning algorithm is called an ensemble method.
+
+As an example of an ensemble method, you can train a group of decision
+tree classifiers, each on a different random subset of the training set. 
+You can then obtain the predictions of all the individual trees, 
+and the class that gets the most votes is the ensemble's prediction
+
+Such an ensemble of decision trees is
+called a random forest, and despite its simplicity, 
+this is one of the most powerful
+machine learning algorithms available today
+
+
+you will often use ensemble methods near the end of a project,
+once you have already built a few good predictors, to combine
+them into an even better predictor. In fact, the winning solutions
+in machine learning competitions often involve
+several ensemble methods
+
+
+Next, we will examine the most popular ensemble methods, including voting
+classifiers , bagging and pasting ensembles, random forests, and boosting,
+and stacking ensembles.
 """
